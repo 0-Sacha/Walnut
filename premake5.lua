@@ -37,6 +37,8 @@ project "Walnut"
        "%{VULKAN_SDK}/Lib/vulkan-1.lib"
    }
 
+   IncludeProject("Walnut")
+
    targetdir 	(project_targetdir .. "/%{prj.name}")
 	objdir 		(project_objdir .. "/%{prj.name}")
 
