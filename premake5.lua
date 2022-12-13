@@ -1,8 +1,13 @@
 
 VULKAN_SDK = os.getenv("VULKAN_SDK")
 if (VULKAN_SDK == nil or VULKAN_SDK == '') then
-   error("Coundn't load VulkanSDK, you may want to change the environement variable name or define it; syntax : VULKAN_SDK={path to the SDK directory}")
+   VULKAN_SDK = os.getenv("VK_SDK_PATH")
+   if (VULKAN_SDK == nil or VULKAN_SDK == '') then
+      error("Coundn't load VulkanSDK, you may want to change the environement variable name or define it; syntax : VULKAN_SDK={path to the SDK directory}")
+   end
 end
+
+printf("Found VulkanSDK at path : %s", VULKAN_SDK)
 
 ProjectPublicIncludes["Walnut"] = {
    "%{Project.Walnut}/%{VULKAN_SDK}/Include",
