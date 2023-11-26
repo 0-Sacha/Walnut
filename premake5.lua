@@ -9,22 +9,23 @@ end
 
 printf("Found VulkanSDK at path : %s", VULKAN_SDK)
 
-ProjectPublicIncludes["Walnut"] = {
-   "%{Project.Walnut}/%{VULKAN_SDK}/Include",
-   "%{Project.Walnut}/vendor/glm",
-   "%{Project.Walnut}/vendor/imgui",
-   "%{Project.Walnut}/vendor/glfw/include",
-   "%{Project.Walnut}/vendor/stb_image",
-   "%{Project.Walnut}/src"
+outputdir = Solution.Path.OutputDirectory
+
+Solution.ProjectsInfo.Includes["ProjectCore"] = {
+   "%{Solution.Projects.Walnut}/%{VULKAN_SDK}/Include",
+   "%{Solution.Projects.Walnut}/vendor/glm",
+   "%{Solution.Projects.Walnut}/vendor/imgui",
+   "%{Solution.Projects.Walnut}/vendor/glfw/include",
+   "%{Solution.Projects.Walnut}/vendor/stb_image",
+   "%{Solution.Projects.Walnut}/src"
 }
 
-Project["GLFW"] 		= "vendor/GLFW"
-Project["ImGui"] 		= "vendor/imgui"
+Solution.Projects["GLFW"] 	   = "vendor/GLFW"
+Solution.Projects["ImGui"] 	= "vendor/imgui"
 
--- Dependencies
 group "Dependencies"
-	include (Project["GLFW"])
-	include (Project["ImGui"])
+	include (Solution.Projects["GLFW"])
+	include (Solution.Projects["ImGui"])
 group ""
 
 project "Walnut"
@@ -32,6 +33,9 @@ project "Walnut"
    language "C++"
    cppdialect "C++20"
    staticruntime "off"
+
+   targetdir 	(Solution.Path.ProjectTargetDirectory)
+   objdir 		(Solution.Path.ProjectObjectDirectory)
 
    files { "src/**.h", "src/**.cpp" }
 
@@ -42,10 +46,7 @@ project "Walnut"
        "%{VULKAN_SDK}/Lib/vulkan-1.lib"
    }
 
-   IncludeProject("Walnut")
-
-   targetdir 	(project_targetdir .. "/%{prj.name}")
-	objdir 		(project_objdir .. "/%{prj.name}")
+	Solution.Project("Walnut")
 
    filter "system:windows"
       defines { "WL_PLATFORM_WINDOWS" }
