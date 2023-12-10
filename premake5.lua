@@ -11,7 +11,7 @@ outputdir = Solution.Path.OutputDirectory
 Solution.Projects["Walnut"].PlatformDefineName = "WL"
 Solution.Projects["Walnut"].Type = "StaticLib"
 Solution.Projects["Walnut"].IncludeDirs = {
-   "%{Solution.Projects.Walnut.Path}/%{VULKAN_SDK}/Include",
+   "%{VULKAN_SDK}/Include",
    "%{Solution.Projects.Walnut.Path}/vendor/glm",
    "%{Solution.Projects.Walnut.Path}/vendor/imgui",
    "%{Solution.Projects.Walnut.Path}/vendor/glfw/include",
@@ -25,8 +25,8 @@ Solution.Projects["GLFW"].Type = "StaticLib"
 Solution.Projects["ImGui"].Type = "StaticLib"
 
 group "Dependencies"
-   Solution.PremakeIncludeProject("GLFW")
-   Solution.PremakeIncludeProject("ImGui")
+   include (Solution.Projects["GLFW"].Path)
+   include (Solution.Projects["ImGui"].Path)
 group ""
 
 project "Walnut"
